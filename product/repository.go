@@ -14,7 +14,7 @@ var collection = session.DB(config.COLLECTION).C(DOCUMENT)
 func FetchProduct() ([]models.Products, error) {
 	var product []models.Products
 
-	err := collection.Find(bson.M{}).All(&product)
+	var err = collection.Find(bson.M{}).All(&product)
 
 	return product, err
 }
