@@ -66,12 +66,11 @@ func Patch(c echo.Context) (err error) {
 		return c.JSON(400, ErrorResponse{400, "Error request"})
 	}
 
-	// Fill models.Products struct from Payload.Data.Products
-	var product models.Products
-	product = payload.Data.Products
-	product.UpdatedAt = time.Now()
+	var newProduct = models.Products{}
+	newProduct.ID = bson.ObjectIdHex(id)
+	newProduct = payload.Data.Products
 
-	product, err = UpdateProduct(id, &product)
+	product, err := UpdateProduct(&newProduct, id)
 	if err != nil {
 		return c.JSON(500, ErrorResponse{500, "Error server"})
 	}

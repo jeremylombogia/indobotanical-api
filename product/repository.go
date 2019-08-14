@@ -1,6 +1,8 @@
 package product
 
 import (
+	"time"
+
 	"github.com/jeremylombogia/indobotanical-api/config"
 	"github.com/jeremylombogia/indobotanical-api/models"
 	"gopkg.in/mgo.v2/bson"
@@ -33,13 +35,34 @@ func StoreProduct(product *models.Products) (models.Products, error) {
 	return *product, err
 }
 
-func UpdateProduct(id string, product *models.Products) (models.Products, error) {
+func UpdateProduct(product *models.Products, id string) (models.Products, error) {
+	previousData, _ := FindProduct(id)
+
+	if product.Name == "" {
+		product.Name = previousData.Name
+	}
+
+	if product.Description == "" {
+		product.Description = previousData.Description
+	}
+
+	if product.Thumbnail == "" {
+		product.Thumbnail = previousData.Thumbnail
+	}
+
+	var payload = bson.M{
+		"name":        product.Name,
+		"description": product.Description,
+		"stock":       product.Stock,
+		"price":       product.Price,
+		"thumbnail":   product.Thumbnail,
+		"createdAt":   product.CreatedAt,
+		"updatedAt":   time.Now(),
+	}
+
 	var err = collection.Update(
 		bson.M{"_id": bson.ObjectIdHex(id)},
-		bson.M{"$set": bson.M{
-			"name":        "new Name",
-			"description": product.Description,
-		}},
+		bson.M{"$set": payload},
 	)
 
 	return *product, err
