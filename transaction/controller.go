@@ -10,9 +10,19 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func Post(c echo.Context) error {
-	var payload = new(Payload)
+func Index(c echo.Context) error {
+	var transactions, err = FetchTransaction()
+	if err != nil {
+		return c.JSON(500, internal.ErrorResponse{500, err.Error()})
+	}
 
+	return c.JSON(200, internal.SuccessResponse{200, nil, transactions})
+}
+
+func Post(c echo.Context) error {
+	var authenticatedId = internal.GetAuthenticatedUserID(c)
+
+	var payload = new(Payload)
 	if err := c.Bind(&payload); err != nil {
 		return c.JSON(400, internal.ErrorResponse{400, err.Error()})
 	}
@@ -37,12 +47,6 @@ func Post(c echo.Context) error {
 		return c.JSON(400, internal.ErrorResponse{400, "Product stock is less than your amount"})
 	}
 
-	// Dummy user
-	// TODO:: Remove this later
-	// var user = models.User{
-	// 	Name: "Jeremiah Ferdinand",
-	// }
-
 	var totalPrice = product.Price * payload.Data.Amount
 
 	var transaction = models.Transactions{
@@ -50,7 +54,7 @@ func Post(c echo.Context) error {
 		Products:     product.ID,
 		TotalPrice:   totalPrice,
 		PaymentProof: nil,
-		User:         bson.ObjectIdHex("5d4ff6dc5e84480d9138fbc0"),
+		User:         bson.ObjectIdHex(authenticatedId),
 		CreatedAt:    time.Now(),
 	}
 

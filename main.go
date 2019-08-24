@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/jeremylombogia/indobotanical-api/config"
 	"github.com/jeremylombogia/indobotanical-api/product"
 	"github.com/jeremylombogia/indobotanical-api/transaction"
 	"github.com/jeremylombogia/indobotanical-api/user"
@@ -17,17 +18,26 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	// Routes
-	e.GET("/products", product.Index)
-	e.GET("/product/:id", product.Show)
-	e.POST("/product", product.Post)
-	e.PATCH("/product/:id", product.Patch)
+	// Authenticated
+	r := e.Group("")
+	r.Use(middleware.JWT([]byte(config.APPKEY)))
+	// Authenticated Product
+	r.POST("/product", product.Post)
+	r.PATCH("/product/:id", product.Patch)
 
+	// Authenticated Transaction
+	r.POST("/transaction", transaction.Post)
+
+	// Authentication
 	e.POST("/auth/login", user.Login)
 
-	e.POST("/transaction", transaction.Post)
+	// Product
+	e.GET("/products", product.Index)
+	e.GET("/product/:id", product.Show)
+
+	// Transaction
+	e.GET("/transactions", transaction.Index)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
-
 }

@@ -4,6 +4,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/jeremylombogia/indobotanical-api/config"
+	"github.com/jeremylombogia/indobotanical-api/internal"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jeremylombogia/indobotanical-api/models"
 	"github.com/labstack/echo"
@@ -19,7 +22,7 @@ func Login(c echo.Context) error {
 	var user, err = FindByEmailAndPassword(payload.Data.Email, payload.Data.Password)
 	if err != nil {
 		if err.Error() == "not found" {
-			return echo.ErrUnauthorized
+			return c.JSON(401, internal.ErrorResponse{401, "Email or password false"})
 		}
 
 		return c.JSON(500, err.Error())
@@ -28,7 +31,8 @@ func Login(c echo.Context) error {
 	var t, _ = generateToken(&user)
 
 	return c.JSON(http.StatusOK, map[string]string{
-		"token": t,
+		"message": "Login success",
+		"token":   t,
 	})
 }
 
@@ -38,6 +42,7 @@ func generateToken(user *models.User) (string, error) {
 
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
+	claims["id"] = user.ID
 	claims["name"] = user.Name
 	claims["email"] = user.Email
 	claims["level"] = user.Level
@@ -45,7 +50,7 @@ func generateToken(user *models.User) (string, error) {
 
 	// Generate encoded token and send it as response.
 	// TODO:: change "secret" to random code that write in ENV
-	t, err := token.SignedString([]byte("secret"))
+	t, err := token.SignedString([]byte(config.APPKEY))
 	if err != nil {
 		return "", err
 	}
