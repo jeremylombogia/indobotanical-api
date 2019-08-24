@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/jeremylombogia/indobotanical-api/product"
+	"github.com/jeremylombogia/indobotanical-api/transaction"
 	"github.com/jeremylombogia/indobotanical-api/user"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -23,6 +24,8 @@ func main() {
 	e.PATCH("/product/:id", product.Patch)
 
 	e.POST("/auth/login", user.Login)
+
+	e.POST("/transaction", transaction.Post)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))

@@ -1,4 +1,4 @@
-package product
+package internal
 
 type SuccessResponse struct {
 	StatusCode int         `json:"statusCode"`
