@@ -1,6 +1,8 @@
 package transaction
 
 import (
+	"os"
+
 	"github.com/jeremylombogia/indobotanical-api/config"
 	"github.com/jeremylombogia/indobotanical-api/models"
 	"gopkg.in/mgo.v2/bson"
@@ -9,7 +11,7 @@ import (
 const DOCUMENT string = "transactions"
 
 var session, _ = config.MongoConnect()
-var collection = session.DB(config.COLLECTION).C(DOCUMENT)
+var collection = session.DB(os.Getenv("COLLECTION_NAME")).C(DOCUMENT)
 
 func FetchTransaction() ([]models.Transactions, error) {
 	var transaction []models.Transactions

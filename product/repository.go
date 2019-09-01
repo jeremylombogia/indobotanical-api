@@ -1,6 +1,7 @@
 package product
 
 import (
+	"os"
 	"time"
 
 	"github.com/jeremylombogia/indobotanical-api/config"
@@ -11,7 +12,7 @@ import (
 const DOCUMENT string = "products"
 
 var session, _ = config.MongoConnect()
-var collection = session.DB(config.COLLECTION).C(DOCUMENT)
+var collection = session.DB(os.Getenv("COLLECTION_NAME")).C(DOCUMENT)
 
 func FetchProduct() ([]models.Products, error) {
 	var product []models.Products

@@ -5,6 +5,7 @@ import (
 	"github.com/jeremylombogia/indobotanical-api/product"
 	"github.com/jeremylombogia/indobotanical-api/transaction"
 	"github.com/jeremylombogia/indobotanical-api/user"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -12,6 +13,11 @@ import (
 var err error
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		panic("Error loading .env file")
+	}
+
 	e := echo.New()
 
 	// Middleware
@@ -40,5 +46,5 @@ func main() {
 	e.GET("/transactions", transaction.Index)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(config.GetPort()))
 }
