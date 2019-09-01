@@ -27,27 +27,36 @@ func Post(c echo.Context) error {
 		return c.JSON(400, internal.ErrorResponse{400, err.Error()})
 	}
 
-	// Check Stock
-	var productId = payload.Data.ProductID
+	// Check Valid Product ID
+	var productID = payload.Data.ProductID
 
-	if !bson.IsObjectIdHex(productId) {
+	if !bson.IsObjectIdHex(productID) {
 		return c.JSON(404, internal.ErrorResponse{404, "ID is not valid"})
 	}
 
-	var product, err = product.FindProduct(productId)
+	// Check Product Record
+	var product, err = product.FindProduct(productID)
 	if err != nil {
 		return c.JSON(400, internal.ErrorResponse{400, err.Error()})
 	}
 
+	// Check Product Avaibility
 	if !product.Avaibility {
 		return c.JSON(400, internal.ErrorResponse{400, "Product is not available"})
 	}
 
+	// Check Product Stock is bigger than amount
 	if product.Stock < payload.Data.Amount {
 		return c.JSON(400, internal.ErrorResponse{400, "Product stock is less than your amount"})
 	}
 
+	// Count Total Price
 	var totalPrice = product.Price * payload.Data.Amount
+
+	// Count by Promo Code
+	if payload.Data.PromoCode == "Kratom01" {
+		totalPrice = totalPrice - (totalPrice * 10 / 100)
+	}
 
 	var transaction = models.Transactions{
 		ID:           bson.NewObjectId(),
