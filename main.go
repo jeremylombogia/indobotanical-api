@@ -30,6 +30,7 @@ func main() {
 
 	// Authentication
 	e.POST("/auth/login", user.Login)
+	e.POST("/auth/register", user.Register)
 
 	// Product
 	e.GET("/products", product.Index)

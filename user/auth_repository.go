@@ -11,13 +11,20 @@ const DOCUMENT string = "users"
 var session, _ = config.MongoConnect()
 var collection = session.DB(config.COLLECTION).C(DOCUMENT)
 
-func FindByEmailAndPassword(email string, password string) (models.User, error) {
+// FindByEmail to see duplicate in register
+// TODO:: Refactor this to one function same as FindByEmailAndPassword()
+func FindByEmail(payload *Payload) (models.User, error) {
 	var user models.User
 
 	var err = collection.Find(bson.M{
-		"email":    email,
-		"password": password,
+		"email": payload.Data.Email,
 	}).One(&user)
 
 	return user, err
+}
+
+func StoreUser(user *models.User) (models.User, error) {
+	var err = collection.Insert(*user)
+
+	return *user, err
 }
