@@ -1,16 +1,12 @@
 package user
 
 import (
-	"log"
 	"net/http"
 	"time"
 
-	"github.com/jeremylombogia/indobotanical-api/config"
 	"github.com/jeremylombogia/indobotanical-api/internal"
-	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2/bson"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/jeremylombogia/indobotanical-api/models"
 	"github.com/labstack/echo"
 )
@@ -35,11 +31,11 @@ func Login(c echo.Context) error {
 	}
 
 	var requestPassword = []byte(payload.Data.Password)
-	if !comparePasswords(user.Password, requestPassword) {
+	if !internal.ComparePassword(user.Password, requestPassword) {
 		return c.JSON(400, internal.ErrorResponse{400, "You enter a wrong password"})
 	}
 
-	var t, _ = generateToken(&user)
+	var t, _ = internal.GenerateToken(&user)
 
 	return c.JSON(http.StatusOK, map[string]string{
 		"message": "Login success",
@@ -71,7 +67,7 @@ func Register(c echo.Context) (err error) {
 
 	// Hash Password
 	var password = []byte(payload.Data.Password)
-	user.Password = hashPassword(password)
+	user.Password = internal.HashPassword(password)
 
 	if user, err = StoreUser(&user); err != nil {
 		return c.JSON(500, err.Error())
@@ -80,52 +76,4 @@ func Register(c echo.Context) (err error) {
 	return c.JSON(http.StatusCreated, map[string]string{
 		"message": "User created",
 	})
-}
-
-// hashPassword
-func hashPassword(password []byte) string {
-	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
-	if err != nil {
-		log.Println(err)
-	}
-
-	// GenerateFromPassword returns a byte slice so we need to
-	// convert the bytes to a string and return it
-	return string(hash)
-}
-
-func comparePasswords(hashedPwd string, plainPwd []byte) bool {
-	// Since we'll be getting the hashed password from the DB it
-	// will be a string so we'll need to convert it to a byte slice
-	byteHash := []byte(hashedPwd)
-	err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
-	if err != nil {
-		log.Println(err)
-		return false
-	}
-
-	return true
-}
-
-// generateToken, it generate from echo token
-func generateToken(user *models.User) (string, error) {
-	// Create token
-	var token = jwt.New(jwt.SigningMethodHS256)
-
-	// Set claims
-	claims := token.Claims.(jwt.MapClaims)
-	claims["id"] = user.ID
-	claims["name"] = user.Name
-	claims["email"] = user.Email
-	claims["level"] = user.Level
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	// Generate encoded token and send it as response.
-	// TODO:: change "secret" to random code that write in ENV
-	t, err := token.SignedString([]byte(config.APPKEY))
-	if err != nil {
-		return "", err
-	}
-
-	return t, err
 }
