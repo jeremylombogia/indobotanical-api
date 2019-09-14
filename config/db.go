@@ -5,7 +5,7 @@ import (
 )
 
 func MongoConnect() (*mgo.Session, error) {
-	var session, err = mgo.Dial("mongodb://heroku_thr3t37f:d9qqnoegat1lam2dpkop0sekjm@ds235431.mlab.com:35431/heroku_thr3t37f")
+	var session, err = mgo.Dial("mongodb+srv://jeremy:jeremi11@indobotanical-t4rkd.mongodb.net/test?retryWrites=true&w=majority")
 	if err != nil {
 		panic(err.Error())
 		return nil, err
