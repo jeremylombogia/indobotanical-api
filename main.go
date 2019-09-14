@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"indobotanical-api/user"
 	"os"
 
 	"github.com/jeremylombogia/indobotanical-api/config"
 	"github.com/jeremylombogia/indobotanical-api/product"
 	"github.com/jeremylombogia/indobotanical-api/transaction"
-	"github.com/jeremylombogia/indobotanical-api/user"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -15,16 +15,15 @@ import (
 var err error
 
 func main() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	panic("Error loading .env file")
-	// }
-
 	e := echo.New()
 
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	// Authentication
+	e.POST("/auth/login", user.Login)
+	e.POST("/auth/register", user.Register)
 
 	// Authenticated
 	r := e.Group("")
@@ -35,10 +34,6 @@ func main() {
 
 	// Authenticated Transaction
 	r.POST("/transaction", transaction.Post)
-
-	// Authentication
-	e.POST("/auth/login", user.Login)
-	e.POST("/auth/register", user.Register)
 
 	// Product
 	e.GET("/products", product.Index)
@@ -52,5 +47,6 @@ func main() {
 	if port == "" {
 		fmt.Errorf("$PORT not set")
 	}
+
 	e.Logger.Fatal(e.Start(":" + port))
 }

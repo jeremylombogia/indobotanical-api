@@ -1,10 +1,10 @@
 package user
 
 import (
+	"indobotanical-api/internal"
 	"net/http"
 	"time"
 
-	"github.com/jeremylombogia/indobotanical-api/internal"
 	"gopkg.in/mgo.v2/bson"
 
 	"github.com/jeremylombogia/indobotanical-api/models"
