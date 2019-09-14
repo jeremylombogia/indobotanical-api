@@ -46,5 +46,5 @@ func main() {
 	e.GET("/transactions", transaction.Index)
 
 	// Start server
-	e.Logger.Fatal(e.Start(config.GetPort()))
+	e.Logger.Fatal(e.Start("80"))
 }
