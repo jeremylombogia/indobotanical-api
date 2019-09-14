@@ -1,11 +1,13 @@
 package config
 
 import (
+	"os"
+
 	"gopkg.in/mgo.v2"
 )
 
 func MongoConnect() (*mgo.Session, error) {
-	var session, err = mgo.Dial("mongodb+srv://jeremy:jeremi11@indobotanical-t4rkd.mongodb.net/test?retryWrites=true&w=majority")
+	var session, err = mgo.Dial(os.Getenv("DB"))
 	if err != nil {
 		panic(err.Error())
 		return nil, err
