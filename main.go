@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/jeremylombogia/indobotanical-api/config"
 	"github.com/jeremylombogia/indobotanical-api/product"
 	"github.com/jeremylombogia/indobotanical-api/transaction"
@@ -45,5 +48,9 @@ func main() {
 	e.GET("/transactions", transaction.Index)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":443"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		fmt.Errorf("$PORT not set")
+	}
+	e.Logger.Fatal(e.Start(port))
 }
