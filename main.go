@@ -52,5 +52,5 @@ func main() {
 	if port == "" {
 		fmt.Errorf("$PORT not set")
 	}
-	e.Logger.Fatal(e.Start(port))
+	e.Logger.Fatal(e.Start(":" + port))
 }
