@@ -1,11 +1,13 @@
 package config
 
 import (
+	"os"
+
 	"gopkg.in/mgo.v2"
 )
 
 func MongoConnect() (*mgo.Session, error) {
-	var session, err = mgo.Dial("mongodb://heroku_ghdkzt3f:61o017lubhkdmddl2qc2jkiko1@ds137090.mlab.com:37090/heroku_ghdkzt3f")
+	var session, err = mgo.Dial(os.Getenv("DB"))
 	if err != nil {
 		panic(err.Error())
 		return nil, err
