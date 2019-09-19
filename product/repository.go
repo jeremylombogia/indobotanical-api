@@ -12,7 +12,7 @@ import (
 const DOCUMENT string = "products"
 
 var session, _ = config.MongoConnect()
-var collection = session.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
+var collection = session.DB("heroku_ghdkzt3f").C(DOCUMENT)
 
 func FetchProduct() ([]models.Products, error) {
 	var product []models.Products

@@ -1,8 +1,6 @@
 package user
 
 import (
-	"os"
-
 	"github.com/jeremylombogia/indobotanical-api/config"
 	"github.com/jeremylombogia/indobotanical-api/models"
 	"gopkg.in/mgo.v2/bson"
@@ -11,7 +9,7 @@ import (
 const DOCUMENT string = "users"
 
 var session, _ = config.MongoConnect()
-var collection = session.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
+var collection = session.DB("heroku_ghdkzt3f").C(DOCUMENT)
 
 // FindByEmail to see duplicate in register
 // TODO:: Refactor this to one function same as FindByEmailAndPassword()
