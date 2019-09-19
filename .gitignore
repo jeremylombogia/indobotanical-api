@@ -1,2 +1,5 @@
 .env
 bin/*
+go.mod
+go.sum
+indobotanical-api
