@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"indobotanical-api/user"
 	"os"
 
@@ -45,7 +44,8 @@ func main() {
 	// Start server
 	port := os.Getenv("PORT")
 	if port == "" {
-		fmt.Errorf("$PORT not set")
+		port = "1323"
+		// fmt.Errorf("$PORT not set")
 	}
 
 	e.Logger.Fatal(e.Start(":" + port))
