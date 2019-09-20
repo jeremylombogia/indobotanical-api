@@ -25,7 +25,7 @@ func main() {
 	e.POST("/auth/register", user.Register)
 
 	// Authenticated
-	r := e.Group("")
+	r := e.Group("/api/v1")
 	r.Use(middleware.JWT([]byte(config.APPKEY)))
 	// Authenticated Product
 	r.POST("/product", product.Post)
