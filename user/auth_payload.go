@@ -1,6 +1,6 @@
 package user
 
-import "github.com/jeremylombogia/indobotanical-api/models"
+import "indobotanical-api/models"
 
 type Payload struct {
 	Data struct {

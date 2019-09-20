@@ -4,9 +4,10 @@ import (
 	"log"
 	"time"
 
+	"indobotanical-api/config"
+	"indobotanical-api/models"
+
 	"github.com/dgrijalva/jwt-go"
-	"github.com/jeremylombogia/indobotanical-api/config"
-	"github.com/jeremylombogia/indobotanical-api/models"
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
 )

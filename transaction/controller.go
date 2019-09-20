@@ -3,9 +3,11 @@ package transaction
 import (
 	"time"
 
-	"github.com/jeremylombogia/indobotanical-api/internal"
-	"github.com/jeremylombogia/indobotanical-api/models"
-	"github.com/jeremylombogia/indobotanical-api/product"
+	"indobotanical-api/internal"
+
+	"indobotanical-api/models"
+	"indobotanical-api/product"
+
 	"github.com/labstack/echo"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -19,6 +21,8 @@ func Index(c echo.Context) error {
 	return c.JSON(200, internal.SuccessResponse{200, nil, transactions})
 }
 
+// Post store transaction
+// Payload: ProductID, PromoCode, Amount, PaymentProof
 func Post(c echo.Context) error {
 	var authenticatedId = internal.GetAuthenticatedUserID(c)
 
@@ -72,10 +76,4 @@ func Post(c echo.Context) error {
 	}
 
 	return c.JSON(201, internal.SuccessResponse{201, "Transaction created", transaction})
-}
-
-// UploadPaymentProof give either succes response or error response
-func UploadPaymentProof() {
-	// Check all of "0" transaction status
-
 }

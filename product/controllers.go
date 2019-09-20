@@ -3,8 +3,9 @@ package product
 import (
 	"time"
 
-	"github.com/jeremylombogia/indobotanical-api/internal"
-	"github.com/jeremylombogia/indobotanical-api/models"
+	"indobotanical-api/internal"
+	"indobotanical-api/models"
+
 	"github.com/labstack/echo"
 	"gopkg.in/mgo.v2/bson"
 )

@@ -3,8 +3,9 @@ package transaction
 import (
 	"os"
 
-	"github.com/jeremylombogia/indobotanical-api/config"
-	"github.com/jeremylombogia/indobotanical-api/models"
+	"indobotanical-api/config"
+	"indobotanical-api/models"
+
 	"gopkg.in/mgo.v2/bson"
 )
 

@@ -7,7 +7,8 @@ import (
 
 	"gopkg.in/mgo.v2/bson"
 
-	"github.com/jeremylombogia/indobotanical-api/models"
+	"indobotanical-api/models"
+
 	"github.com/labstack/echo"
 )
 
