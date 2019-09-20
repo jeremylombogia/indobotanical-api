@@ -20,32 +20,28 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	// TODO:: add versioning API
+
 	// Authentication
 	e.POST("/auth/login", user.Login)
 	e.POST("/auth/register", user.Register)
 
-	// Authenticated
-	r := e.Group("/api/v1")
+	// Authenticated Route
+	r := e.Group("")
 	r.Use(middleware.JWT([]byte(config.APPKEY)))
-	// Authenticated Product
-	r.POST("/product", product.Post)
-	r.PATCH("/product/:id", product.Patch)
 
-	// Authenticated Transaction
-	r.POST("/transaction", transaction.Post)
+	r.POST("/products", product.Post)
+	r.POST("/transactions", transaction.Post)
+	r.PATCH("/products/:id", product.Patch)
 
-	// Product
 	e.GET("/products", product.Index)
-	e.GET("/product/:id", product.Show)
-
-	// Transaction
+	e.GET("/products/:id", product.Show)
 	e.GET("/transactions", transaction.Index)
 
 	// Start server
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "1323"
-		// fmt.Errorf("$PORT not set")
 	}
 
 	e.Logger.Fatal(e.Start(":" + port))
