@@ -5,13 +5,112 @@ HOST: http://polls.apiblueprint.org/
 
 First version of Indobotanical
 
+## Auth [/auth]
+
+### Login [POST /login]
+
++ Request (application/json)
+
+        {
+            "data": {
+                "email": "email",
+                "password": "password",
+            }
+        }
+        
++ Response 201 (application/json)
+
+        {
+            "message": "Login success",
+            "token": "bla bla bla",
+        }
+        
+### Register [POST /register]
+
++ Request (application/json)
+
+        {
+            "data": {
+                "name": "Badrus",
+                "email": "hi@gmail.com",
+                "password": "secret",
+                "address": "Buah Batu Bandung",
+                "city": "Bandung",
+                "country": "Indonesia",
+            }
+        }
+        
++ Response 201 (application/json)
+
+        {
+            "message": "User Created",
+        }
+        
++ Response 409 (application/json)
+
+        {
+            "statusCode" 409,
+            "message": "Your email are already registered before",
+        }
+
+## Products [/products]
+
+### All[GET]
+
++ Response 200 (application/json)
+
+        {
+            "statusCode": 200,
+            "message": null,
+            "data": [
+                {
+                    "id": "5d748de07ec12c0d7030ad21",
+                    "name": "Kratom 1",
+                    "description": "Lorem ipsum dolor si kratom",
+                    "stock": 20,
+                    "price": 35,
+                    "thumbnail": "image.png",
+                    "avaibility": true,
+                    "createdAt": "2019-09-08T12:13:04.765+07:00",
+                    "updatedAt": "0001-01-01T00:00:00Z"
+                },
+                {
+                    "id": "5d845f02e41e61459bfd7c81",
+                    "name": "Kratom 2",
+                    "description": "Lorem ipsum dolor si kratom",
+                    "stock": 20,
+                    "price": 35,
+                    "thumbnail": "image.png",
+                    "avaibility": true,
+                    "createdAt": "2019-09-08T12:13:04.765+07:00",
+                    "updatedAt": "0001-01-01T00:00:00Z"
+                }
+            ]
+        }
+
+### Show[GET /:id]
+
++ Response 200 (application/json)
+
+        {
+            "statusCode": 200,
+            "message": null,
+            "data": {
+                "id": "5d748de07ec12c0d7030ad21",
+                "name": "Kratom 2",
+                "description": "Lorem ipsum dolor si kratom",
+                "stock": 20,
+                "price": 35,
+                "thumbnail": "image.png",
+                "avaibility": true,
+                "createdAt": "2019-09-08T12:13:04.765+07:00",
+                "updatedAt": "0001-01-01T00:00:00Z"
+            }
+        }
+
 ## Transaction [/transactions]
 
 ### Create Transactions [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
 
 + Request (application/json)
 
