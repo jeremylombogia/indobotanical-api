@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: https://indobotanical.herokuapp.com
 
 # Indobotanical
 
@@ -55,7 +55,7 @@ First version of Indobotanical
 
 ## Products [/products]
 
-### All[GET]
+### List[GET]
 
 + Response 200 (application/json)
 
@@ -109,6 +109,83 @@ First version of Indobotanical
         }
 
 ## Transaction [/transactions]
+
+### List [GET]
+
++ Response 201 (application/json)
+
+        {
+            "statusCode": 200,
+            "message": null,
+            "data": [
+                {
+                    "id": "5d867487461770000429942f",
+                    "products": [
+                        {
+                            "id": "5d84657e941ab90004518662",
+                            "name": "Kratom 2",
+                            "description": "Lorem ipsum dolor si kratom",
+                            "stock": 20,
+                            "price": 35,
+                            "thumbnail": "image.png",
+                            "avaibility": true,
+                            "createdAt": "2019-09-20T05:37:02.184Z",
+                            "updatedAt": "0001-01-01T00:00:00Z"
+                        },
+                        {
+                            "id": "5d8465a1941ab90004518663",
+                            "name": "Kratom 2",
+                            "description": "Lorem ipsum dolor si kratom",
+                            "stock": 20,
+                            "price": 35,
+                            "thumbnail": "image.png",
+                            "avaibility": true,
+                            "createdAt": "2019-09-20T05:37:37.877Z",
+                            "updatedAt": "0001-01-01T00:00:00Z"
+                        }
+                    ],
+                    "userId": "5d8465ed941ab90004518664",
+                    "totalPrice": 63,
+                    "status": 0,
+                    "paymentProof": null,
+                    "createdAt": "2019-09-21T19:05:43.216Z",
+                    "updatedAt": "0001-01-01T00:00:00Z"
+                }
+                {
+                    "id": "9d867487461770000429942f",
+                    "products": [
+                        {
+                            "id": "5d84657e941ab90004518662",
+                            "name": "Kratom 2",
+                            "description": "Lorem ipsum dolor si kratom",
+                            "stock": 20,
+                            "price": 35,
+                            "thumbnail": "image.png",
+                            "avaibility": true,
+                            "createdAt": "2019-09-20T05:37:02.184Z",
+                            "updatedAt": "0001-01-01T00:00:00Z"
+                        },
+                        {
+                            "id": "5d8465a1941ab90004518663",
+                            "name": "Kratom 2",
+                            "description": "Lorem ipsum dolor si kratom",
+                            "stock": 20,
+                            "price": 35,
+                            "thumbnail": "image.png",
+                            "avaibility": true,
+                            "createdAt": "2019-09-20T05:37:37.877Z",
+                            "updatedAt": "0001-01-01T00:00:00Z"
+                        }
+                    ],
+                    "userId": "5d8465ed941ab90004518664",
+                    "totalPrice": 63,
+                    "status": 0,
+                    "paymentProof": null,
+                    "createdAt": "2019-09-21T19:05:43.216Z",
+                    "updatedAt": "0001-01-01T00:00:00Z"
+                }
+            ]
+        }
 
 ### Create Transactions [POST]
 
