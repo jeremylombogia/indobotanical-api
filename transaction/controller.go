@@ -1,12 +1,10 @@
 package transaction
 
 import (
-	"time"
-
 	"indobotanical-api/internal"
-
 	"indobotanical-api/models"
 	"indobotanical-api/product"
+	"time"
 
 	"github.com/labstack/echo"
 	"gopkg.in/mgo.v2/bson"
@@ -31,51 +29,59 @@ func Post(c echo.Context) error {
 		return c.JSON(400, internal.ErrorResponse{400, err.Error()})
 	}
 
-	// Check Valid Product ID
-	var productID = payload.Data.ProductID
-
-	if !bson.IsObjectIdHex(productID) {
-		return c.JSON(404, internal.ErrorResponse{404, "ID is not valid"})
-	}
-
-	// Check Product Record
-	var product, err = product.FindProduct(productID)
-	if err != nil {
-		return c.JSON(400, internal.ErrorResponse{400, err.Error()})
-	}
-
-	// Check Product Avaibility
-	if !product.Avaibility {
-		return c.JSON(400, internal.ErrorResponse{400, "Product is not available"})
-	}
-
-	// Check Product Stock is bigger than amount
-	if product.Stock < payload.Data.Amount {
-		return c.JSON(400, internal.ErrorResponse{400, "Product stock is less than your amount"})
-	}
+	// TODO:: need refactoring this struct
+	var transaction models.Transactions
 
 	// Count Total Price
-	var totalPrice = product.Price * payload.Data.Amount
+	var totalPrice = 0
+
+	for _, indexProduct := range payload.Data.Products {
+		if !bson.IsObjectIdHex(indexProduct.ProductID) {
+			return c.JSON(404, internal.ErrorResponse{404, "ID is not valid"})
+		}
+
+		var product, err = product.FindProduct(indexProduct.ProductID)
+		if err != nil {
+			return c.JSON(400, internal.ErrorResponse{400, err.Error()})
+		}
+
+		// Check Product Avaibility
+		if !product.Avaibility {
+			return c.JSON(400, internal.ErrorResponse{400, "Product is not available"})
+		}
+
+		// Check Product Stock is bigger than amount
+		if product.Stock < indexProduct.Amount {
+			return c.JSON(400, internal.ErrorResponse{400, "Product stock is less than your amount"})
+		}
+
+		// Check Product Stock is bigger than amount
+		if product.Stock < indexProduct.Amount {
+			return c.JSON(400, internal.ErrorResponse{400, "Product stock is less than your amount"})
+		}
+
+		transaction.Products = append(transaction.Products, product)
+
+		totalPrice += product.Price * indexProduct.Amount
+	}
 
 	// Count by Promo Code
 	if payload.Data.PromoCode == "Kratom01" {
 		totalPrice = totalPrice - (totalPrice * 10 / 100)
 	}
 
-	var transaction = models.Transactions{
-		ID:           bson.NewObjectId(),
-		Products:     product.ID,
-		TotalPrice:   totalPrice,
-		PaymentProof: nil,
-		User:         bson.ObjectIdHex(authenticatedId),
-		CreatedAt:    time.Now(),
-	}
+	transaction.ID = bson.NewObjectId()
+	transaction.TotalPrice = totalPrice
+	transaction.PaymentProof = nil
+	transaction.User = bson.ObjectIdHex(authenticatedId)
+	transaction.CreatedAt = time.Now()
 
-	if transaction, err = StoreTransation(&transaction); err != nil {
+	transaction, err := StoreTransation(&transaction)
+	if err != nil {
 		return c.JSON(500, internal.ErrorResponse{500, err.Error()})
 	}
 
-	return c.JSON(201, internal.SuccessResponse{201, "Transaction created", transaction})
+	return c.JSON(200, transaction)
 }
 
 func PaymentProof(c echo.Context) error {
