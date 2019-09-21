@@ -12,8 +12,8 @@ import (
 
 const DOCUMENT string = "users"
 
-var session, _ = config.MongoConnect()
-var collection = session.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
+var sessionDb = config.MongoConnect()
+var collection = sessionDb.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
 
 // FindByEmail to see duplicate in register
 // TODO:: Refactor this to one function same as FindByEmailAndPassword()

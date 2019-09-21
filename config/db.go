@@ -6,12 +6,11 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-func MongoConnect() (*mgo.Session, error) {
-	var session, err = mgo.Dial(os.Getenv("MONGODB_URI"))
+func MongoConnect() *mgo.Session {
+	var sessionDb, err = mgo.Dial(os.Getenv("MONGODB_URI"))
 	if err != nil {
 		panic(err.Error())
-		return nil, err
 	}
 
-	return session, nil
+	return sessionDb
 }

@@ -11,8 +11,8 @@ import (
 
 const DOCUMENT string = "transactions"
 
-var session, _ = config.MongoConnect()
-var collection = session.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
+var sessionDb = config.MongoConnect()
+var collection = sessionDb.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
 
 func FetchTransaction() ([]models.Transactions, error) {
 	var transaction []models.Transactions

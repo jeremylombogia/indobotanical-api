@@ -4,9 +4,10 @@ import (
 	"indobotanical-api/user"
 	"os"
 
-	"github.com/jeremylombogia/indobotanical-api/config"
-	"github.com/jeremylombogia/indobotanical-api/product"
-	"github.com/jeremylombogia/indobotanical-api/transaction"
+	"indobotanical-api/config"
+	"indobotanical-api/product"
+	"indobotanical-api/transaction"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -17,8 +18,8 @@ func main() {
 	e := echo.New()
 
 	// Middleware
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	// e.Use(middleware.Logger())
+	// e.Use(middleware.Recover())
 
 	// TODO:: add versioning API
 
@@ -32,6 +33,7 @@ func main() {
 
 	r.POST("/products", product.Post)
 	r.POST("/transactions", transaction.Post)
+	r.POST("/transactions/payment-proof/:id", transaction.PaymentProof)
 	r.PATCH("/products/:id", product.Patch)
 
 	e.GET("/products", product.Index)

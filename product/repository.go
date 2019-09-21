@@ -12,8 +12,8 @@ import (
 
 const DOCUMENT string = "products"
 
-var session, _ = config.MongoConnect()
-var collection = session.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
+var sessionDb = config.MongoConnect()
+var collection = sessionDb.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
 
 func FetchProduct() ([]models.Products, error) {
 	var product []models.Products

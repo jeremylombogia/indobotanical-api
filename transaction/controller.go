@@ -22,7 +22,7 @@ func Index(c echo.Context) error {
 }
 
 // Post store transaction
-// Payload: ProductID, PromoCode, Amount, PaymentProof
+// Payload: ProductID, PromoCode, Amount
 func Post(c echo.Context) error {
 	var authenticatedId = internal.GetAuthenticatedUserID(c)
 
@@ -76,4 +76,22 @@ func Post(c echo.Context) error {
 	}
 
 	return c.JSON(201, internal.SuccessResponse{201, "Transaction created", transaction})
+}
+
+func PaymentProof(c echo.Context) error {
+	UploadFile()
+
+	return c.JSON(200, "Okay")
+	// file, err := c.FormFile("file")
+	// if err != nil {
+	// 	return err
+	// }
+
+	// src, err := file.Open()
+	// if err != nil {
+	// 	return err
+	// }
+	// defer src.Close()
+
+	// return err
 }
