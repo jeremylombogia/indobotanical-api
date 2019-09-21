@@ -3,37 +3,11 @@ HOST: http://polls.apiblueprint.org/
 
 # Indobotanical
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+First version of Indobotanical
 
-## Questions Collection [/questions]
+## Transaction [/transactions]
 
-### List All Questions [GET]
-
-+ Response 200 (application/json)
-
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
-
-### Create a New Question [POST]
+### Create Transactions [POST]
 
 You may create your own question using this action. It takes a JSON
 object containing a question and a collection of answers in the
@@ -42,39 +16,55 @@ form of choices.
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "data": {
+                "products": [
+                    {
+                        "productId": "5d846472e41e614e3bffdef2",
+                        "amount": 1
+                    },
+                    {
+                        "productId": "5d8470ede41e6151d13734b1",
+                        "amount": 1
+                    }
+                ],
+                "promoCode": "Kratom01"
+            }
         }
 
 + Response 201 (application/json)
 
-    + Headers
-
-            Location: /questions/2
-
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
+                "id": "5d866ca17ec12c4eb217ace1",
+                "products": [
                     {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
+                        "id": "5d846472e41e614e3bffdef2",
+                        "name": "Kratom 2",
+                        "description": "Lorem ipsum dolor si kratom",
+                        "stock": 20,
+                        "price": 35,
+                        "thumbnail": "image.png",
+                        "avaibility": true,
+                        "createdAt": "2019-09-20T12:32:34.232+07:00",
+                        "updatedAt": "0001-01-01T00:00:00Z"
+                    },
+                    {
+                        "id": "5d8470ede41e6151d13734b1",
+                        "name": "Kratom 2",
+                        "description": "Lorem ipsum dolor si kratom",
+                        "stock": 20,
+                        "price": 35,
+                        "thumbnail": "image.png",
+                        "avaibility": true,
+                        "createdAt": "2019-09-20T13:25:49.897+07:00",
+                        "updatedAt": "0001-01-01T00:00:00Z"
                     }
-                ]
+                ],
+                "userId": "5d8465ed941ab90004518664",
+                "totalPrice": 63,
+                "status": 0,
+                "paymentProof": null,
+                "createdAt": "2019-09-22T01:32:01.073356+07:00",
+                "updatedAt": "0001-01-01T00:00:00Z"
             }
