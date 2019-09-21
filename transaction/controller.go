@@ -81,7 +81,7 @@ func Post(c echo.Context) error {
 		return c.JSON(500, internal.ErrorResponse{500, err.Error()})
 	}
 
-	return c.JSON(200, transaction)
+	return c.JSON(201, transaction)
 }
 
 func PaymentProof(c echo.Context) error {
