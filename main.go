@@ -43,7 +43,7 @@ func main() {
 	// Start server
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "1323"
+		port = "8080"
 	}
 
 	e.Logger.Fatal(e.Start(":" + port))
