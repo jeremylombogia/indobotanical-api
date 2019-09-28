@@ -17,6 +17,7 @@ services:
       - db
     environment: # Pass environment variables to the service
       MONGODB_URI: db:27017
+      DB_NAME: "indobotanical"
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - backend
 
@@ -24,6 +25,8 @@ services:
   db:
     image: "mongo:latest"
     restart: unless-stopped
+    ports:
+      - "27017:27017"
     networks:
       - backend
 

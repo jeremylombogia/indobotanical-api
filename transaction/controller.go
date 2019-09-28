@@ -1,9 +1,15 @@
 package transaction
 
 import (
+	"fmt"
 	"indobotanical-api/internal"
 	"indobotanical-api/models"
 	"indobotanical-api/product"
+	"io"
+	"math/rand"
+	"os"
+	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/labstack/echo"
@@ -84,20 +90,38 @@ func Post(c echo.Context) error {
 	return c.JSON(201, transaction)
 }
 
+// TODO:: Move this to the helper or CDN
 func PaymentProof(c echo.Context) error {
-	UploadFile()
+	file, err := c.FormFile("file")
+	if err != nil {
+		return err
+	}
 
-	return c.JSON(200, "Okay")
-	// file, err := c.FormFile("file")
-	// if err != nil {
-	// 	return err
-	// }
+	transactionID := c.Param("id")
+	extension := filepath.Ext(file.Filename)
+	randomNumber := strconv.Itoa(rand.Intn(1000))
 
-	// src, err := file.Open()
-	// if err != nil {
-	// 	return err
-	// }
-	// defer src.Close()
+	fileName := fmt.Sprintf("cdn/payment-proof/%s%s-%s", transactionID, randomNumber, extension)
 
-	// return err
+	if extension == ".JPG" || extension == ".JPEG" || extension == ".png" {
+		src, err := file.Open()
+		if err != nil {
+			return c.JSON(500, err.Error())
+		}
+		defer src.Close()
+
+		dst, err := os.Create(fileName)
+		if err != nil {
+			return c.JSON(500, err.Error())
+		}
+		defer dst.Close()
+
+		if _, err = io.Copy(dst, src); err != nil {
+			return c.JSON(500, err.Error())
+		}
+
+		return c.JSON(400, internal.SuccessResponse{400, "File uploaded", nil})
+	}
+
+	return c.JSON(400, internal.ErrorResponse{400, "File not allowed"})
 }
