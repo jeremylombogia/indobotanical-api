@@ -18,11 +18,12 @@ func main() {
 	e := echo.New()
 
 	// Middleware
-	// e.Use(middleware.Logger())
-	// e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	e.Static("/cdn", "cdn")
 
 	// TODO:: add versioning API
-
 	// Authentication
 	e.POST("/auth/login", user.Login)
 	e.POST("/auth/register", user.Register)

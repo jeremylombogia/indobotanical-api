@@ -101,7 +101,7 @@ func PaymentProof(c echo.Context) error {
 	extension := filepath.Ext(file.Filename)
 	randomNumber := strconv.Itoa(rand.Intn(1000))
 
-	fileName := fmt.Sprintf("cdn/payment-proof/%s%s-%s", transactionID, randomNumber, extension)
+	fileName := fmt.Sprintf("cdn/payment-proof/%s%s%s", transactionID, randomNumber, extension)
 
 	if extension == ".JPG" || extension == ".JPEG" || extension == ".png" {
 		src, err := file.Open()
@@ -120,7 +120,9 @@ func PaymentProof(c echo.Context) error {
 			return c.JSON(500, err.Error())
 		}
 
-		return c.JSON(400, internal.SuccessResponse{400, "File uploaded", nil})
+		return c.JSON(400, internal.SuccessResponse{400, "File uploaded", map[string]string{
+			"images": fileName,
+		}})
 	}
 
 	return c.JSON(400, internal.ErrorResponse{400, "File not allowed"})
