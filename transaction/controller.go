@@ -1,15 +1,9 @@
 package transaction
 
 import (
-	"fmt"
 	"indobotanical-api/internal"
 	"indobotanical-api/models"
 	"indobotanical-api/product"
-	"io"
-	"math/rand"
-	"os"
-	"path/filepath"
-	"strconv"
 	"time"
 
 	"github.com/labstack/echo"
@@ -94,36 +88,19 @@ func Post(c echo.Context) error {
 func PaymentProof(c echo.Context) error {
 	file, err := c.FormFile("file")
 	if err != nil {
-		return err
+		return c.JSON(500, internal.ErrorResponse{500, err.Error()})
 	}
 
-	transactionID := c.Param("id")
-	extension := filepath.Ext(file.Filename)
-	randomNumber := strconv.Itoa(rand.Intn(1000))
+	transactionId := c.Param("id")
 
-	fileName := fmt.Sprintf("cdn/payment-proof/%s%s%s", transactionID, randomNumber, extension)
-
-	if extension == ".JPG" || extension == ".JPEG" || extension == ".png" {
-		src, err := file.Open()
-		if err != nil {
-			return c.JSON(500, err.Error())
-		}
-		defer src.Close()
-
-		dst, err := os.Create(fileName)
-		if err != nil {
-			return c.JSON(500, err.Error())
-		}
-		defer dst.Close()
-
-		if _, err = io.Copy(dst, src); err != nil {
-			return c.JSON(500, err.Error())
-		}
-
-		return c.JSON(400, internal.SuccessResponse{400, "File uploaded", map[string]string{
-			"images": fileName,
-		}})
+	if !CheckFileExtension(file) {
+		return c.JSON(500, "File not allowed")
 	}
 
-	return c.JSON(400, internal.ErrorResponse{400, "File not allowed"})
+	fileName, err := UploadFile(file, transactionId)
+	if err != nil {
+		return c.JSON(500, internal.ErrorResponse{500, err.Error()})
+	}
+
+	return c.JSON(200, internal.SuccessResponse{200, "Payment proof uploaded", fileName})
 }
