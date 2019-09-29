@@ -7,7 +7,7 @@ First version of Indobotanical
 
 ## Auth [/auth]
 
-### Login [POST /login]
+### Login [POST /auth/login]
 
 + Request (application/json)
 
@@ -25,7 +25,7 @@ First version of Indobotanical
             "token": "bla bla bla",
         }
         
-### Register [POST /register]
+### Register [POST /auth/register]
 
 + Request (application/json)
 
@@ -110,7 +110,7 @@ First version of Indobotanical
 
 ## Transaction [/transactions]
 
-### List [GET]
+### List [GET /transactions]
 
 + Response 201 (application/json)
 
@@ -187,7 +187,7 @@ First version of Indobotanical
             ]
         }
 
-### Create Transactions [POST]
+### Create Transactions [POST /transactions]
 
 + Request (application/json)
 
@@ -243,4 +243,21 @@ First version of Indobotanical
                 "paymentProof": null,
                 "createdAt": "2019-09-22T01:32:01.073356+07:00",
                 "updatedAt": "0001-01-01T00:00:00Z"
+            }
+
+### Update Payment Proof [PATCH /payment-proof/:id]
+
++ Request (application/json)
+
+        {
+            "file": "file.png"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status": 201,
+                "fileName": "file.png"
             }
