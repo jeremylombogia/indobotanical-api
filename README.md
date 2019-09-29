@@ -2,7 +2,7 @@
 
 Version one of Indobotanical backend services
 
-API Documentation: https://indobotanical.docs.apiary.io/#reference/0/auth/list
+API Documentation: https://indobotanical.docs.apiary.io/
 
 ### Built with
 
