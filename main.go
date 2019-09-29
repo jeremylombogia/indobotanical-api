@@ -34,7 +34,7 @@ func main() {
 
 	r.POST("/products", product.Post)
 	r.POST("/transactions", transaction.Post)
-	r.POST("/transactions/payment-proof/:id", transaction.PaymentProof)
+	r.PATCH("/transactions/payment-proof/:id", transaction.PaymentProof)
 	r.PATCH("/products/:id", product.Patch)
 
 	e.GET("/products", product.Index)
