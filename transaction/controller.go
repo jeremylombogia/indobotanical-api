@@ -6,12 +6,23 @@ import (
 	"indobotanical-api/product"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"gopkg.in/mgo.v2/bson"
 )
 
 func Index(c echo.Context) error {
 	var transactions, err = FetchTransaction()
+
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	userID := claims["name"].(string)
+
+	return c.JSON(200, userID)
+	if userID != "" {
+		transactions, err = FetchTransactionsByUserID(userID)
+	}
+
 	if err != nil {
 		return c.JSON(500, internal.ErrorResponse{500, err.Error()})
 	}
