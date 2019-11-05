@@ -12,16 +12,12 @@ import (
 )
 
 func Index(c echo.Context) error {
-	var transactions, err = FetchTransaction()
-
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userID := claims["name"].(string)
 
-	return c.JSON(200, userID)
-	if userID != "" {
-		transactions, err = FetchTransactionsByUserID(userID)
-	}
+	var transactions, err = FetchTransactionsByUserID(userID)
+	//var transactions, err = FetchTransaction()
 
 	if err != nil {
 		return c.JSON(500, internal.ErrorResponse{500, err.Error()})

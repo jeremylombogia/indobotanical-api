@@ -14,13 +14,13 @@ const DOCUMENT string = "transactions"
 var sessionDb = config.MongoConnect()
 var collection = sessionDb.DB(os.Getenv("DB_NAME")).C(DOCUMENT)
 
-func FetchTransaction() ([]models.Transactions, error) {
-	var transaction []models.Transactions
-
-	var err = collection.Find(bson.M{}).All(&transaction)
-
-	return transaction, err
-}
+//func FetchTransaction() ([]models.Transactions, error) {
+//	var transaction []models.Transactions
+//
+//	var err = collection.Find(bson.M{}).All(&transaction)
+//
+//	return transaction, err
+//}
 
 func FetchTransactionsByUserID(userID string) ([]models.Transactions, error) {
 	var transaction []models.Transactions
