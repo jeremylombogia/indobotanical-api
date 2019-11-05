@@ -14,7 +14,7 @@ import (
 func Index(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	userID := claims["name"].(string)
+	userID := claims["id"].(string)
 
 	var transactions, err = FetchTransactionsByUserID(userID)
 	//var transactions, err = FetchTransaction()

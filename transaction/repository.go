@@ -26,7 +26,7 @@ func FetchTransactionsByUserID(userID string) ([]models.Transactions, error) {
 	var transaction []models.Transactions
 
 	var err = collection.Find(bson.M{
-		"userId": userID,
+		"userId": bson.ObjectIdHex(userID),
 	}).All(&transaction)
 
 	return transaction, err

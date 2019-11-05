@@ -32,6 +32,7 @@ func main() {
 	r := e.Group("")
 	r.Use(middleware.JWT([]byte(config.APPKEY)))
 
+	r.GET("/transactions", transaction.Index)
 	r.POST("/products", product.Post)
 	r.POST("/transactions", transaction.Post)
 	r.PATCH("/transactions/payment-proof/:id", transaction.PaymentProof)
@@ -39,7 +40,6 @@ func main() {
 
 	e.GET("/products", product.Index)
 	e.GET("/products/:id", product.Show)
-	e.GET("/transactions", transaction.Index)
 
 	// Start server
 	port := os.Getenv("PORT")
