@@ -57,6 +57,8 @@ func GenerateToken(user *models.User) (string, error) {
 	claims["id"] = user.ID
 	claims["name"] = user.Name
 	claims["email"] = user.Email
+	claims["city"] = user.City
+	claims["country"] = user.Country
 	claims["level"] = user.Level
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
