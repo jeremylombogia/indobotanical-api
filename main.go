@@ -23,6 +23,12 @@ func main() {
 
 	e.Static("/cdn", "cdn")
 
+	e.GET("/", func(c echo.Context) error {
+		return c.JSON(201, map[string]interface{}{
+			"message": "API Response OK",
+		})
+	})
+
 	// TODO:: add versioning API
 	// Authentication
 	e.POST("/auth/login", user.Login)
