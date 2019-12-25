@@ -17,6 +17,9 @@ var err error
 func main() {
 	e := echo.New()
 
+	// CORS Enable temp
+	e.Use(middleware.CORS())
+
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
